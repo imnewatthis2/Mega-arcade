@@ -1,2 +1,226 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mega Arcade 🎮</title><style>*{box-sizing:border-box}body{margin:0;background:#090d1c;color:white;font-family:Arial,sans-serif}header{text-align:center;padding:28px 12px;background:linear-gradient(135deg,#652bff,#00b8ff)}h1{font-size:38px;margin:0}header p{margin-bottom:0}main{max-width:1100px;margin:auto;padding:16px}input{width:100%;padding:14px;border-radius:12px;border:0;font-size:16px;margin-bottom:14px}nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}nav button,.game button,#back{border:0;border-radius:10px;padding:11px;background:#273454;color:white;cursor:pointer}nav button.active{background:#b7ff59;color:#101522}#games{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.game{background:#161f36;border:1px solid #303c5c;padding:15px;border-radius:15px;min-height:155px;display:flex;flex-direction:column;gap:9px}.emoji{font-size:38px}.game h3{font-size:17px;margin:0}.game small{color:#b8c5e3}.game button{background:#7554ff;margin-top:auto;font-weight:bold}#player{display:none;margin-top:20px;padding:12px;background:#161f36;border-radius:15px}#player h2{font-size:20px}iframe{width:100%;height:65vh;border:0;border-radius:10px;background:white}a{color:#b7ff59}.note{color:#b8c5e3;font-size:13px;line-height:1.5}</style></head><body><header><h1>🎮 MEGA ARCADE</h1><p>One website. Tons of games. Endless fun!</p></header><main><input id="search" placeholder="🔎 Search for a game..." oninput="render()"><nav id="filters"></nav><div id="games"></div><section id="player"><button id="back" onclick="closeGame()">⬅ Back to games</button><h2 id="title"></h2><iframe id="frame" allow="fullscreen; autoplay; gamepad" title="Game window"></iframe><p class="note">If the game doesn't load here, its website may block embedding.</p><a id="external" target="_blank" rel="noopener noreferrer">Open this game in a new tab ↗</a></section><p class="note">Games belong to their respective owners. Some may open externally or have device restrictions.</p></main><script>const games=[["Retro Bowl","🏈","Sports","https://www.retrobowl.com/"],["Basketball Stars","🏀","Sports","https://www.basketballstars.com/"],["Basket Random","🏀","Sports","https://poki.com/en/g/basket-random"],["Soccer Skills","⚽","Sports","https://poki.com/en/g/soccer-skills-world-cup"],["Moto X3M","🏍️","Racing","https://poki.com/en/g/moto-x3m"],["Drift Boss","🚗","Racing","https://drift-boss.com/"],["Subway Surfers","🚇","Action","https://poki.com/en/g/subway-surfers"],["Temple Run 2","🏃","Action","https://poki.com/en/g/temple-run-2"],["Stickman Hook","🪝","Action","https://poki.com/en/g/stickman-hook"],["Minecraft Classic","🧱","Adventure","https://classic.minecraft.net/"],["Fireboy & Watergirl","🔥","Puzzle","https://poki.com/en/g/fireboy-and-watergirl-1-forest-temple"],["2048","🔢","Puzzle","https://play2048.co/"],["Chess","♟️","Puzzle","https://www.chess.com/play/computer"],["Tetris","🧩","Puzzle","https://tetris.com/play-tetris"],["Cookie Clicker","🍪","Casual","https://orteil.dashnet.org/cookieclicker/"],["Slither.io","🐍","Casual","https://slither.io/"],["Agar.io","🟣","Casual","https://agar.io/"],["Cut the Rope","🍬","Puzzle","https://poki.com/en/g/cut-the-rope"],["Wordle","🔤","Puzzle","https://www.nytimes.com/games/wordle/index.html"],["A Dark Room","🌌","Adventure","https://adarkroom.doublespeakgames.com/"]];const categories=["All","Sports","Racing","Action","Puzzle","Adventure","Casual"];let category="All";function makeFilters(){const nav=document.getElementById("filters");nav.innerHTML="";categories.forEach(c=>{const b=document.createElement("button");b.textContent=c;b.className=c===category?"active":"";b.onclick=()=>{category=c;makeFilters();render()};nav.appendChild(b);});}function render(){const q=document.getElementById("search").value.toLowerCase();const root=document.getElementById("games");root.innerHTML="";const found=games.filter(g=>(category==="All"||g[2]===category)&&g[0].toLowerCase().includes(q));if(!found.length){root.textContent="No games found. Try another search.";return;}found.forEach(g=>{const card=document.createElement("div");card.className="game";const emoji=document.createElement("div");emoji.className="emoji";emoji.textContent=g[1];const name=document.createElement("h3");name.textContent=g[0];const tag=document.createElement("small");tag.textContent=g[2];const btn=document.createElement("button");btn.textContent="▶ PLAY";btn.onclick=()=>launch(g);card.append(emoji,name,tag,btn);root.appendChild(card);});}function launch(g){document.getElementById("player").style.display="block";document.getElementById("title").textContent=g[1]+" "+g[0];document.getElementById("frame").src=g[3];document.getElementById("external").href=g[3];document.getElementById("player").scrollIntoView({behavior:"smooth"});}function closeGame(){document.getElementById("frame").src="about:blank";document.getElementById("player").style.display="none";}makeFilters();render();</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mega Arcade 🎮</title>
 
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #080d1b;
+  color: white;
+}
+
+header {
+  text-align: center;
+  padding: 25px 12px;
+  background: linear-gradient(135deg, #641bff, #00c9ff);
+}
+
+h1 { margin: 0 0 12px; font-size: 34px; }
+
+#search {
+  width: min(95%, 500px);
+  padding: 14px;
+  border: 0;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+main { padding: 16px; }
+
+#games {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.game {
+  color: white;
+  background: #18223d;
+  border: 1px solid #34446d;
+  border-radius: 15px;
+  min-height: 125px;
+  padding: 16px 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.game:hover { background: #303f68; }
+
+.emoji {
+  display: block;
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+#player { display: none; }
+
+#frame {
+  width: 100%;
+  height: 72vh;
+  min-height: 400px;
+  border: 0;
+  border-radius: 12px;
+  background: white;
+}
+
+button.action {
+  padding: 12px 16px;
+  margin: 5px 5px 12px 0;
+  border: 0;
+  border-radius: 9px;
+  background: #7545ff;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.note {
+  color: #c1cbe3;
+  line-height: 1.5;
+}
+
+footer {
+  padding: 25px;
+  text-align: center;
+  color: #9eabc9;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>🎮 MEGA ARCADE</h1>
+  <p>Pick a game and start playing!</p>
+  <input id="search" placeholder="🔎 Search games…"
+         aria-label="Search games">
+</header>
+
+<main>
+  <section id="home">
+    <h2>🔥 All Games</h2>
+    <div id="games"></div>
+  </section>
+
+  <section id="player">
+    <button class="action" id="back">⬅ Back</button>
+    <button class="action" id="full">⛶ Fullscreen</button>
+    <button class="action" id="open">Open Game ↗</button>
+    <h2 id="title"></h2>
+    <iframe id="frame"
+      title="Game player"
+      allow="fullscreen; autoplay; gamepad"
+      referrerpolicy="strict-origin-when-cross-origin">
+    </iframe>
+    <p class="note" id="status">
+      If the game does not load, use Open Game to visit its website.
+    </p>
+  </section>
+</main>
+
+<footer>🎮 Mega Arcade — Game time!</footer>
+
+<script>
+const gameList = [
+  { name: "Retro Bowl", emoji: "🏈",
+    url: https://retrobowl.me/ },
+  { name: "Basketball Stars", emoji: "🏀",
+    url: "https://www.crazygames.com/game/basketball-stars" },
+  { name: "Slope", emoji: "🔴",
+    url: "https://www.crazygames.com/game/slope" },
+  { name: "Moto X3M", emoji: "🏍️",
+    url: "https://www.crazygames.com/game/moto-x3m" },
+  { name: "Run 3", emoji: "🏃",
+    url: "https://www.coolmathgames.com/0-run-3" },
+  { name: "2048", emoji: "🔢",
+    url: "https://play2048.co/" },
+  { name: "Cookie Clicker", emoji: "🍪",
+    url: "https://orteil.dashnet.org/cookieclicker/" },
+  { name: "Chess", emoji: "♟️",
+    url: "https://www.chess.com/play/computer" },
+  { name: "Pac-Man", emoji: "👻",
+    url: "https://www.google.com/logos/2010/pacman10-i.html" },
+  { name: "Tetris", emoji: "🧱",
+    url: "https://tetris.com/play-tetris" },
+  { name: "Agar.io", emoji: "🔵",
+    url: "https://agar.io/" }
+];
+
+const home = document.getElementById("home");
+const player = document.getElementById("player");
+const games = document.getElementById("games");
+const frame = document.getElementById("frame");
+const search = document.getElementById("search");
+
+let currentGame = null;
+
+function renderGames(query = "") {
+  games.replaceChildren();
+
+  const matches = gameList.filter(game =>
+    game.name.toLowerCase().includes(query.toLowerCase())
+  );
+
+  matches.forEach(game => {
+    const card = document.createElement("button");
+    card.className = "game";
+
+    const emoji = document.createElement("span");
+    emoji.className = "emoji";
+    emoji.textContent = game.emoji;
+
+    card.append(emoji, document.createTextNode(game.name));
+    card.addEventListener("click", () => launchGame(game));
+    games.appendChild(card);
+  });
+
+  if (!matches.length) {
+    games.textContent = "No games found. Try another search!";
+  }
+}
+
+function launchGame(game) {
+  currentGame = game;
+  home.style.display = "none";
+  player.style.display = "block";
+
+  document.getElementById("title").textContent = game.name;
+  document.getElementById("status").textContent =
+    "Loading game. If it is blocked, tap Open Game.";
+  frame.src = game.url;
+
+  window.scrollTo(0, 0);
+}
+
+document.getElementById("back").addEventListener("click", () => {
+  frame.src = "about:blank";
+  player.style.display = "none";
+  home.style.display = "block";
+  currentGame = null;
+});
+
+document.getElementById("open").addEventListener("click", () => {
+  if (currentGame) {
+    window.open(currentGame.url, "_blank", "noopener,noreferrer");
+  }
+});
+
+document.getElementById("full").addEventListener("click", () => {
+  if (frame.requestFullscreen) {
+    frame.requestFullscreen();
+  }
+});
+
+search.addEventListener("input", () => {
+  renderGames(search.value);
+});
+
+renderGames();
+</script>
+</body>
+</html>
