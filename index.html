@@ -1,112 +1,307 @@
-// --- 1. GAME DATA DATABASE ---
-// A mock database of games available on the website
-const gamesData = [
-  { id: 1, title: "Space Invaders Retro", category: "Action", plays: 1240, rating: 4.8 },
-  { id: 2, title: "Sudoku Master", category: "Puzzle", plays: 850, rating: 4.5 },
-  { id: 3, title: "Speed Racer 3D", category: "Racing", plays: 2300, rating: 4.2 },
-  { id: 4, title: "Candy Matcher", category: "Puzzle", plays: 4120, rating: 4.7 },
-  { id: 5, title: "Zombie Survival", category: "Action", plays: 1890, rating: 4.6 },
-  { id: 6, title: "Neon Drift", category: "Racing", plays: 920, rating: 4.4 }
-];
-
-// --- 2. HIGH SCORE SYSTEM (LocalStorage) ---
-// Saves and retrieves scores so players don't lose progress
-const ScoreSystem = {
-  saveScore: function(gameTitle, score) {
-    let scores = this.getAllScores();
-    // Only update if the new score is higher than the historical best
-    if (!scores[gameTitle] || score > scores[gameTitle]) {
-      scores[gameTitle] = score;
-      localStorage.setItem('gamePortalScores', JSON.stringify(scores));
-      console.log(`New High Score for ${gameTitle}: ${score}!`);
-    }
-  },
-
-  getAllScores: function() {
-    const saved = localStorage.getItem('gamePortalScores');
-    return saved ? JSON.parse(saved) : {};
-  }
-};
-
-// --- 3. UI CONTROLLER & DOM MANIPULATION ---
-// Handles rendering games, filtering, and searching
-const UIController = {
-  // DOM Elements
-  gameGrid: document.getElementById('game-grid'),
-  searchInput: document.getElementById('search-box'),
-  categoryButtons: document.querySelectorAll('.category-btn'),
-
-  init: function() {
-    this.renderGames(gamesData);
-    this.setupEventListeners();
-  },
-
-  // Renders the list of game cards onto the page dynamically
-  renderGames: function(games) {
-    this.gameGrid.innerHTML = ''; // Clear existing content
-    
-    if (games.length === 0) {
-      this.gameGrid.innerHTML = '<p class="no-results">No games found. Try a different search!</p>';
-      return;
-    }
-
-    games.forEach(game => {
-      const card = document.createElement('div');
-      card.className = 'game-card';
-      card.innerHTML = `
-        <div class="game-thumb" style="background-color: #2a2a3a;"></div>
-        <div class="game-info">
-          <h3>${game.title}</h3>
-          <span class="category-badge">${game.category}</span>
-          <div class="meta">
-            <span>⭐ ${game.rating}</span>
-            <span>🔥 ${game.plays} plays</span>
-          </div>
-          <button class="play-btn" onclick="UIController.launchGame('${game.title}')">Play Now</button>
-        </div>
-      `;
-      this.gameGrid.appendChild(card);
-    });
-  },
-
-  // Sets up the search bar and category filter filters
-  setupEventListeners: function() {
-    // Search input listener
-    this.searchInput.addEventListener('input', (e) => {
-      const searchTerm = e.target.value.toLowerCase();
-      const filtered = gamesData.filter(game => 
-        game.title.toLowerCase().includes(searchTerm)
-      );
-      this.renderGames(filtered);
-    });
-
-    // Category button listeners
-    this.categoryButtons.forEach(button => {
-      button.addEventListener('click', (e) => {
-        // Toggle active class visually
-        document.querySelector('.category-btn.active')?.classList.remove('active');
-        button.classList.add('active');
-
-        const selectedCategory = button.getAttribute('data-category');
-        if (selectedCategory === 'All') {
-          this.renderGames(gamesData);
-        } else {
-          const filtered = gamesData.filter(game => game.category === selectedCategory);
-          this.renderGames(filtered);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Arcade Hub</title>
+    <style>
+        /* Modern Dark Arcade Theme */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121214;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
-      });
-    });
-  },
 
-  // Simulates launching a game when clicked
-  launchGame: function(gameTitle) {
-    alert(`Launching ${gameTitle}... Have fun!`);
-    // Example hook to save a score after playing
-    // ScoreSystem.saveScore(gameTitle, 500); 
-  }
-};
+        header {
+            background-color: #1a1a1e;
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border-bottom: 3px solid #ff0055;
+        }
 
-// Initialize the system when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-  UIController.init();
-});
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            color: #ff0055;
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
+        }
+
+        /* Navigation Menu */
+        nav {
+            margin: 25px 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background-color: #26262b;
+            color: white;
+            border: 2px solid #3f3f46;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background-color: #ff0055;
+            border-color: #ff0055;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background-color: #ff0055;
+            border-color: #ff0055;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);
+        }
+
+        /* Screen Window Container */
+        #arcade-window {
+            background-color: #1a1a1e;
+            border: 4px solid #3f3f46;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            height: 480px;
+            display: flex;
+            justify-center: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            overflow: hidden;
+        }
+
+        .game-view {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .game-view.active {
+            display: flex;
+        }
+
+        .score-board {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+
+        /* GAME 1: Snake Interface */
+        #snakeCanvas {
+            background-color: #050505;
+            border: 2px solid #333;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+        }
+
+        .game-over-text {
+            color: #ff3333;
+            font-size: 1.5rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* GAME 2: Whack-A-Mole Interface */
+        .mole-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 110px);
+            grid-gap: 15px;
+            margin-top: 10px;
+        }
+
+        .hole {
+            width: 110px;
+            height: 110px;
+            background-color: #3e2723;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #271510;
+            box-shadow: inset 0 10px 10px rgba(0,0,0,0.5);
+        }
+
+        .mole {
+            width: 80px;
+            height: 80px;
+            background-color: #ffb300;
+            border-radius: 50% 50% 0 0;
+            position: absolute;
+            bottom: -80px;
+            left: 15px;
+            transition: bottom 0.1s ease;
+            cursor: pointer;
+            border: 2px solid #ff8f00;
+        }
+
+        .mole.up {
+            bottom: 0;
+        }
+
+        /* Start/Reset Buttons */
+        .action-btn {
+            background-color: #00ffcc;
+            color: #121214;
+            border: none;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .action-btn:hover {
+            background-color: #00ccaa;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>⚡ ARCADE MATRIX ⚡</h1>
+    </header>
+
+    <!-- Main Navigation Hub -->
+    <nav>
+        <button class="nav-btn active" onclick="switchTab('dashboard')">🏠 Menu</button>
+        <button class="nav-btn" onclick="switchTab('snake')">🐍 Snake</button>
+        <button class="nav-btn" onclick="switchTab('mole')">🔨 Whack-A-Mole</button>
+    </nav>
+
+    <!-- Main Arcade Cabinet Frame -->
+    <div id="arcade-window">
+
+        <!-- DASHBOARD MENU -->
+        <div id="view-dashboard" class="game-view active">
+            <h2>Welcome, Player 1</h2>
+            <p style="color: #aaa; text-align: center; max-width: 400px; line-height: 1.5;">
+                Select a game from the navigation panel above to boot up an interactive session instantly!
+            </p>
+        </div>
+
+        <!-- GAME: SNAKE -->
+        <div id="view-snake" class="game-view">
+            <div class="score-board">Score: <span id="snakeScore">0</span></div>
+            <canvas id="snakeCanvas" width="300" height="300"></canvas>
+            <div id="snakeGameOver" class="game-over-text">GAME OVER</div>
+            <button class="action-btn" onclick="initSnake()">Restart Game</button>
+        </div>
+
+        <!-- GAME: WHACK-A-MOLE -->
+        <div id="view-mole" class="game-view">
+            <div class="score-board">Score: <span id="moleScore">0</span></div>
+            <button class="action-btn" id="startMoleBtn" onclick="startMoleGame()">Start Whacking</button>
+            <div class="mole-grid">
+                <div class="hole"><div class="mole" onclick="whack(this)"></div></div>
+                <div class="hole"><div class="mole" onclick="whack(this)"></div></div>
+                <div class="hole"><div class="mole" onclick="whack(this)"></div></div>
+                <div class="hole"><div class="mole" onclick="whack(this)"></div></div>
+                <div class="hole"><div class="mole" onclick="whack(this)"></div></div>
+                <div class="hole"><div class="mole" onclick="whack(this)"></div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. ARCADE NAVIGATION CONTROLLER ---
+        function switchTab(gameType) {
+            // Reset active button states
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            // Hide all sub-views
+            document.querySelectorAll('.game-view').forEach(view => view.classList.remove('active'));
+
+            // Activate chosen components
+            const targetBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.textContent.toLowerCase().includes(gameType));
+            if (targetBtn) targetBtn.classList.add('active');
+            
+            document.getElementById(`view-${gameType}`).classList.add('active');
+
+            // Shutdown processes running from opposing games
+            clearInterval(snakeGameInterval);
+            clearInterval(moleInterval);
+            clearTimeout(moleTimeout);
+            document.querySelectorAll('.mole').forEach(m => m.classList.remove('up'));
+
+            // Auto-trigger setup parameters if changing directly to Snake
+            if(gameType === 'snake') {
+                initSnake();
+            }
+        }
+
+        // --- 2. GAME ENGINE: SNAKE ---
+        const canvas = document.getElementById("snakeCanvas");
+        const ctx = canvas.getContext("2d");
+        const box = 15;
+        let snake, direction, food, snakeScore, snakeGameInterval;
+
+        // Listen for directional keys globally
+        document.addEventListener("keydown", changeSnakeDirection);
+
+        function initSnake() {
+            clearInterval(snakeGameInterval);
+            document.getElementById("snakeGameOver").style.display = "none";
+            snakeScore = 0;
+            document.getElementById("snakeScore").innerText = snakeScore;
+            
+            direction = "RIGHT";
+            snake = [
+                { x: 10 * box, y: 10 * box },
+                { x: 9 * box, y: 10 * box }
+            ];
+            
+            generateFood();
+            snakeGameInterval = setInterval(drawSnakeGame, 130);
+        }
+
+        function generateFood() {
+            food = {
+                x: Math.floor(Math.random() * 20) * box,
+                y: Math.floor(Math.random() * 20) * box
+            }
+        }
+
+        function changeSnakeDirection(event) {
+            if (event.keyCode == 37 && direction != "RIGHT") direction = "LEFT";
+            else if (event.keyCode == 38 && direction != "DOWN") direction = "UP";
+            else if (event.keyCode == 39 && direction != "LEFT") direction = "RIGHT";
+            else if (event.keyCode == 40 && direction != "UP") direction = "DOWN";
+        }
+
+        function drawSnakeGame() {
+            // Clean canvas area
+            ctx.fillStyle = "#050505";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Snake
+            for (let i = 0; i < snake.length; i++) {
+                ctx.fillStyle = (i === 0) ? "#00ffcc" : "#00aa99";
+                ctx.fillRect(snake[i].x, snake[i].y, box, box);
+                ctx.strokeStyle = "#050505";
+                ctx.strokeRect(snake[i].x, snake[i].y, box, box);
+            }
+
+            // Draw Food pellet
+            ctx.fillStyle = "#ff0055";
+            ctx.fillRect(food.x, food.y, box, box);
+
+            // Calculate Head Position Coordinates
+            let snakeX = snake[0].x;
+            let snakeY = snake[0].y;
+
+            if (direction == "LEFT") snakeX -= box;
