@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang=“en”>
+<html lang="en">
 <head>
-<meta charset=“UTF-8”>
-<meta name=“viewport” content=“width=device-width, initial-scale=1”>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mega Music 🎧</title>
 
 <style>
@@ -81,20 +81,23 @@ footer {
 </header>
 
 <nav>
-  <button class=“active” onclick=“showMusic(‘spotify’, this)”>
+  <!-- Fixed curly quotes “ ” to standard straight quotes " " -->
+  <button class="active" onclick="showMusic('spotify', this)">
     🟢 Spotify
   </button>
-  <button onclick=“showMusic(‘soundcloud’, this)”>
+  <button onclick="showMusic('soundcloud', this)">
     🟠 SoundCloud
   </button>
 </nav>
 
 <main>
-  <section id=“spotify” class=“player”>
+  <!-- Fixed curly quotes on IDs and classes -->
+  <section id="spotify" class="player">
     <h2>🟢 Spotify</h2>
     <p>Play music, albums, and playlists.</p>
-    <iframe class=“spotify”
-      src=https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M
+    <!-- Fixed: Added double-quotes around the verified Spotify Today's Top Hits URL -->
+    <iframe class="spotify"
+      src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       loading="lazy">
     </iframe>
@@ -121,10 +124,8 @@ footer {
 
 <script>
 function showMusic(service, button) {
-  document.getElementById('spotify').hidden =
-    service !== 'spotify';
-  document.getElementById('soundcloud').hidden =
-    service !== 'soundcloud';
+  document.getElementById('spotify').hidden = service !== 'spotify';
+  document.getElementById('soundcloud').hidden = service !== 'soundcloud';
 
   document.querySelectorAll('nav button').forEach(b =>
     b.classList.remove('active')
