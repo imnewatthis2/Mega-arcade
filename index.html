@@ -1,148 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Unblocked Websites | Proxies</title>
-    <link rel="icon" type="image/png" href="images/uw.png" sizes="16x16" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="./css/proxies.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" />
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Classes</title>
+    <link rel="icon" type="image/png" href="//ssl.gstatic.com/classroom/favicon.png">
+    
     <script>
-      window.dataLayer = window.dataLayer || [];
+        function surfFreely() {
+            document.getElementById("c").innerHTML = "<iframe id=\"iframe\" src=\"https://phoenix-le.cf\"style=\" width=\"100%\" height=\"100%\";>"
+        }
+        function bing() {
+            document.getElementById("c").innerHTML = "<iframe onload=\"frameload()\" src=\"https://www.bing.com\" ;>"
+        } 
+        function re() {
+            document.getElementById("c").innerHTML = "<div id=\"box\"><h2 id=\"contents\">Contents</h2><ul><li class=\"category\">Misc</li><li><span class=\"heading\">Inspect Element</li><span><span class=\"working\" class=\"bookmarklet\"> Working<span></ul></div>"
+        }
+        function home() {
+            document.getElementById("c").innerHTML = "<h1>Welcome to the Stealth Popup unblocker, made by marc#8019. The proxy feature should work on all platforms and security vendors (goguardian, iboss, etc) and it works with games. The bing-iframe embeds bing into the site."
+        }
+        function fullscreen() {
+            var x = document.getElementById("header");
+            if (x.style.display === "none") {
+                x.style.display = "inline-block";
+                document.getElementById("y").style.position = "static"
+                
+            } else {
+                x.style.display = "none";
+                document.getElementById("y").style.position = "absolute"
+                document.getElementById("y").style.zIndex = "1"
+            }
+        }
 
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID');
-    </script>
-    <!-- Google Tag Manager -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KXRHPNW89S"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'G-KXRHPNW89S');
-    </script>
+      
+        </script>
     <style>
-      body {
-        font-family: Roboto, sans-serif;
-        font-size: 13.3333px;
-        color: #ffffff;
-        text-align: center;
-        background-color: #1C1C1C;
-        cursor: url('images/pointerblue1.png'), none;
-        padding-top: 9.5%;
-      }
+        html {
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            height:100%;
+            width:100%;
+            margin:0;
+            overflow: hidden;
+            
+            background-color: #222831;
+        }
+        #c {
+            height:100%;
+            width:100%;
+            margin:0;
+            overflow: hidden;
+        }
+        iframe {
+            position: relative;
+            border: none;
+            margin-top: 10px;
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            margin: 0;
+    
+           
+        } button {
+            outline:none;
+            width: auto;
+            height: auto;
+            color: #222;
+            opacity: .5;
+            transition: .3s;
+            display: inline-block;
 
-      a:hover,
-      button:hover {
-        cursor: url('images/handblue120.png'), pointer;
-      }
+            border: none;
+            background-color: #00adb5;
+            font-size: 15px;
+            padding: 5px 1px 5px 4px;
+        } 
+
+        button:hover {
+            opacity: 1;
+        }
+        #y {
+            display: inline-block;
+            padding: 5px 1px 5px 1px;
+           
+            
+        }
+        #header {
+            cursor:pointer !important;
+            display:inline-block;
+            margin: 0px;
+            padding: 0px;
+        }
+        form {
+            display:none;
+            width: auto;
+            
+            color: #222;
+            
+        } input {
+            border-style: 1px solid;
+            width: 95px;
+            
+        }
+ 
+        
+        
     </style>
-  <body>
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <a href="https://github.com/SchoolIzBoring">
-            <img src="./images/uw.png" alt="Unblocked" width="50" height="50" class="logo" />
-          </a>
-        </div>
-        <div class="navitems">
-          <ul class="nav navbar-nav">
-            <li>
-              <a href="index.html">Home</a>
-            </li>
-            <li>
-              <a href="gamesites.html">Gamesites</a>
-            </li>
-            <li class="active">
-              <a href="proxies.html">Proxies</a>
-            </li>
-            <li>
-              <a href="other.html">Other</a>
-            </li>
-            <li>
-              <a href="tools.html">Tools</a>
-            </li>
-            <li>
-              <a href="settings.html">Settings</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    </div>
-    </div>
-    </nav>
-    <div id="header">
-      <img src="logo.png" alt="Unblocked" />
-    </div>
-    <p>Number of users: <span id="connection-counter">1000</span>
-    </p>
-    <div class="container">
-      <div class="proxy-container">
-        <div class="header">
-          <h4 class="proxy-title">
-            <span class="proxy-text">
-              <img src="./images/proxy.png"> Proxies <img src="./images/proxy.png">
-            </span>
-          </h4>
-        </div>
-        <div class="row">
-          <div class="col-md-4">
-            <a class="btn btn-default btn-lg btn-block" role="button" target="_blank" href="https://167.114.102.230">
-              <img src="./images/kp.png" alt="icon" width="16" height="16" />&nbsp;KProxy </a>
-          </div>
-          <div class="col-md-4">
-            <a class="btn btn-default btn-lg btn-block" role="button" target="_blank" href="https://67.207.72.190">
-              <img src="./images/cp.png" alt="icon" width="16" height="16" />&nbsp;CroxyProxy </a>
-          </div>
-          <div class="col-md-4">
-            <a class="btn btn-default btn-lg btn-block" role="button" target="_blank" href="https://terriblestories.org/">
-              <img src="./images/holy unblocker.png" alt="icon" width="16" height="16" />&nbsp;Holy Unblocker </a>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">
-            <a class="btn btn-default btn-lg btn-block" role="button" target="_blank" href="https://dabfloss.ga/">
-              <img src="./images/terbium.png" alt="icon" width="16" height="16" />&nbsp;Terbium </a>
-          </div>
-          <div class="col-md-4">
-            <a class="btn btn-default btn-lg btn-block" role="button" target="_blank" href="https://moist.vercel.app/">
-              <img src="./images/incongnito.png" alt="icon" width="16" height="16" /> Incognito </a>
-          </div>
-          <div class="col-md-4">
-            <a class="btn btn-default btn-lg btn-block" role="button" target="_blank" href="https://neb.searchtheweb.xyz/">
-              <img src="./images/nebula.png" alt="icon" width="16" height="16" /> Nebula </a>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">
-            <a class="btn btn-default btn-lg btn-block" role="button" target="_blank" href="https://eclipse-is.pretty-cool.ml/">
-              <img src="./images/eclipse.png" alt="icon" width="16" height="16" />&nbsp;Eclipse </a>
-          </div>
-          <div class="col-md-4">
-            <a class="btn btn-default btn-lg btn-block" role="button" target="_blank" href="https://jesus.is-a.win/">
-              <img src="./images/elixir.png" alt="icon" width="16" height="16" /> Elixir </a>
-          </div>
-          <div class="col-md-4">
-            <a class="btn btn-default btn-lg btn-block" role="button" target="_blank" href="https://schoolookup.ga">
-              <img src="./images/rammerhead.png" alt="icon" width="16" height="16" /> Rammerhead </a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/keen-slider"></script>
-    <script src="./js/common.js"></script>
-    <script src="./js/index.js"></script>
-  </body>
+</head>
+<button id="y" onclick=fullscreen()>↓</button><!--
+--><div id="header"><!--
+            --><button onclick="bing()">Bing Iframe</button><button onclick="surfFreely()">Surf Freely</button><button onclick="bookmarklets()">Bookmarklets</button><button onclick="home()">Home</button>
+                <form onsubmit="goToURL();">
+                    <input type="url" >
+                </form>
+              
+            
+            
+       
+</div>
+<body>
+    <section id='c'>
+    </section>
+</body>
 </html>
+
